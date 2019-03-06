@@ -1,0 +1,22 @@
+spring:
+  data:
+    mongodb:
+      authentication-database: admin
+      host: 192.168.0.18
+      password: admin
+      username: admin
+      field-naming-strategy: org.springframework.data.mapping.model.SnakeCaseFieldNamingStrategy
+      database: books
+      port: 27017
+    elasticsearch:
+      repositories:
+        enabled: false
+  redis:
+    database: 0
+    port: 6379
+    host: 192.168.0.11
+  jackson:
+    serialization:
+      WRITE_DATES_AS_TIMESTAMPS: false
+  application:
+    name: Phoebus

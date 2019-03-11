@@ -3,7 +3,9 @@ package org.acgeek.phoebus.model
 import com.fasterxml.jackson.annotation.JsonIgnore
 import kotlinx.serialization.SerialId
 import kotlinx.serialization.Serializable
+import java.io.Serializable as Seria
 import org.acgeek.phoebus.service.LocalDateTimeSerializer
+import org.springframework.data.annotation.Id
 import org.springframework.data.mongodb.core.index.CompoundIndex
 import org.springframework.data.mongodb.core.index.CompoundIndexes
 import org.springframework.data.mongodb.core.index.Indexed
@@ -16,25 +18,27 @@ import java.time.LocalDateTime
 @Document("site_user")
 @Serializable
 data class UserDo(
-        @Indexed(unique = true) val uid: String,
-        @SerialId(2) @Indexed(unique = true) val mail: String,
-        @SerialId(3) val nick: String,
-        @SerialId(4) @JsonIgnore val password: String,
-        @SerialId(5) val avatar: String,
-        @SerialId(6) val credit: Long,
-        @SerialId(7) val desc: String,
-        @SerialId(8) @Indexed val status: Int,
+        @SerialId(1) @Id var id: String? = null,
+        @SerialId(2) @Indexed(unique = true) val uid: String,
+        @SerialId(3) @Indexed(unique = true) var mail: String,
+        @SerialId(4) val nick: String,
+        @SerialId(5) @JsonIgnore var password: String,
+        @SerialId(6) val avatar: String,
+        @SerialId(7) val credit: Long,
+        @SerialId(8) val desc: String,
+        @SerialId(9) @Indexed val status: Int,
         @Serializable(LocalDateTimeSerializer::class)
-        @SerialId(9) val create: LocalDateTime,
+        @SerialId(10) val create: LocalDateTime,
         @Serializable(LocalDateTimeSerializer::class)
-        @SerialId(10) val active: LocalDateTime
-)
+        @SerialId(11) val active: LocalDateTime
+): Seria
 
 /**
  * 站点管理员
  */
 @Document("site_admin")
 data class AdminDo(
+        @SerialId(1) @Id var id: String? = null,
         @Indexed(unique = true) val uid: String,
         val status: Int,
         val create: LocalDateTime,

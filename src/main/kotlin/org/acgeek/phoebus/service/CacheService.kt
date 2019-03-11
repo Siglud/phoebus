@@ -14,16 +14,12 @@ import kotlin.reflect.KClass
 class CacheService(private val redisTemplate: ReactiveRedisTemplate<String, String>) {
 
     @ImplicitReflectionSerializer
-    fun <T: Any> getFromCache(cacheKey: String, clazz: KClass<T>, supplier: Supplier<Mono<T?>>): Mono<T> {
+    fun <T: Any> getFromCache(cacheKey: String, clazz: KClass<T>, supplier: Supplier<Mono<T>>): Mono<T> {
         return redisTemplate.opsForValue().get(cacheKey).map {
             ProtoBuf.load(ProtoBuf().context.getOrDefault(clazz), HexConverter.parseHexBinary(it))
-        }.switchIfEmpty(supplier.get().map {
-            if (it == null) {
-                Mono.empty<T>()
-            } else {
-                redisTemplate.opsForValue().set(cacheKey, ProtoBuf.dumps(ProtoBuf().context.getOrDefault(clazz), it))
+        }.switchIfEmpty(supplier.get().flatMap {
+            redisTemplate.opsForValue().set(cacheKey, ProtoBuf.dumps(ProtoBuf().context.getOrDefault(clazz), it))
                         .thenReturn(it)
-            }
-        }.flatMap { it })
+        })
     }
 }

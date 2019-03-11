@@ -12,11 +12,18 @@ spring:
       repositories:
         enabled: false
   redis:
-    database: 0
-    port: 6379
-    host: 192.168.0.11
+    database: 2
+    port: 22334
+    host: 192.168.0.13
+    lettuce:
+      pool:
+        max-active: 2
   jackson:
     serialization:
       WRITE_DATES_AS_TIMESTAMPS: false
   application:
     name: Phoebus
+  session:
+    store-type: redis
+    timeout: 90m
+session-redis-db: 1

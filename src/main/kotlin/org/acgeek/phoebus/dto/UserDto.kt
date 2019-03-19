@@ -1,10 +1,15 @@
 package org.acgeek.phoebus.dto
 
+import org.acgeek.phoebus.model.UserDo
 import org.hibernate.validator.constraints.Length
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
+import org.springframework.security.core.Authentication
 import org.springframework.security.core.userdetails.UserDetails
 import javax.validation.constraints.Email
 
 class CustomUser(u: UserDetails, val uid: String?): UserDetails by u
+
+class CustomAuthentication(auth: UsernamePasswordAuthenticationToken, val user: UserDo?): Authentication by auth
 
 data class UserDto(
         @field:Email(regexp = ".+@.+\\..+", message = "{user.mail.illegal}")

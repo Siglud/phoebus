@@ -1,4 +1,6 @@
 spring:
+  main:
+    banner-mode: 'off'
   data:
     mongodb:
       authentication-database: admin
@@ -26,4 +28,15 @@ spring:
   session:
     store-type: redis
     timeout: 90m
+  http:
+    log-request-details: true
+  devtools:
+    restart:
+      enabled: true
+server:
+  servlet:
+    session:
+      cookie:
+        max-age: 999d
+        http-only: true
 session-redis-db: 1

@@ -10,10 +10,8 @@ pipeline {
             agent {
                 label 'master'
             }
-            script {
-                now = sh(returnStdout: true, script: 'date +%Y%m%d%H%M')
-            }
             steps {
+                now = sh(returnStdout: true, script: 'date +%Y%m%d%H%M')
                 echo 'Hello world!, @ ${NOW}'
             }
         }

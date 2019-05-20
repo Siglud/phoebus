@@ -8,11 +8,13 @@ pipeline {
     stages {
         stage('echo stage') {
             agent {
-                label 'master'
+                docker {
+                    image 'gradle:jre11-slim'
+                    args '-v /data/.gradle:/root/.gradle'
+                }
             }
             steps {
-                def now = sh(returnStdout: true, script: 'date +%Y%m%d%H%M')
-                echo 'Hello world!, @ ${NOW}'
+                sh 'gradle clean && gradle build'
             }
         }
     }

@@ -11,7 +11,7 @@ pipeline {
                 label 'master'
             }
             steps {
-                now = sh(returnStdout: true, script: 'date +%Y%m%d%H%M')
+                def now = sh(returnStdout: true, script: 'date +%Y%m%d%H%M')
                 echo 'Hello world!, @ ${NOW}'
             }
         }

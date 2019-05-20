@@ -1,0 +1,5 @@
+embedded:
+  container:
+    mongodb:
+      enable: true
+      docker-image: "mongo:3.4.20"

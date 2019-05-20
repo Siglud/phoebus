@@ -2,7 +2,7 @@ pipeline {
     agent any
     options {
         disableConcurrentBuilds()
-        skipDefaultCheckout()
+        // skipDefaultCheckout()
         timeout(time: 1, unit: 'HOURS')
     }
     stages {
@@ -14,7 +14,7 @@ pipeline {
                 }
             }
             steps {
-                sh 'gradle clean && gradle build'
+                sh 'gradle build'
             }
         }
     }

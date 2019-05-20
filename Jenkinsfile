@@ -5,14 +5,16 @@ pipeline {
         skipDefaultCheckout()
         timeout(time: 1, unit: 'HOURS')
     }
+    environment {
+        NOW = sh returnStdout: true, script: "date +%Y%m%d%H%M"
+    }
     stages {
         stage('echo stage') {
             agent {
                 label 'master'
             }
             steps {
-                def today = sh returnStdout: true, script: "date +%Y%m%d%H%M"
-                echo 'Hello world!, @ ${today}'
+                echo 'Hello world!, @ ${NOW}'
             }
         }
     }

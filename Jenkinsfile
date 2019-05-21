@@ -6,7 +6,7 @@ pipeline {
         timeout(time: 1, unit: 'HOURS')
     }
     stages {
-        stage('Build Jar) {
+        stage('Build Jar') {
             agent {
                 docker {
                     image 'gradle:jre11-slim'

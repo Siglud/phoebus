@@ -23,7 +23,7 @@ pipeline {
                 beforeAgent true
             }
             steps {
-                sh 'docker build -t phoebus'
+                sh 'docker build . -t phoebus'
             }
         }
     }

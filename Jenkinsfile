@@ -6,7 +6,7 @@ pipeline {
         timeout(time: 1, unit: 'HOURS')
     }
     stages {
-        stage('echo stage') {
+        stage('---------Build Jar---------') {
             agent {
                 docker {
                     image 'gradle:jre11-slim'
@@ -15,6 +15,15 @@ pipeline {
             }
             steps {
                 sh 'gradle build'
+            }
+        }
+        stage('---------Build Docker Image---------') {
+            when {
+                environment ignoreCase: true, name: 'JENKINS_NAME', value: 'cj'
+                beforeAgent true
+            }
+            steps {
+                sh 'docker build -t phoebus'
             }
         }
     }

@@ -29,7 +29,14 @@ pipeline {
             }
             steps {
                 echo 'rm all running images or stopped images'
-                sh "docker ps -a|grep -E 'phoebus|Created|Exited'|cut -d ' ' -f 1|xargs -r docker rm"
+                script {
+                    try {
+                        sh "docker ps -a|grep -E 'phoebus|Created|Exited'|cut -d ' ' -f 1|xargs -r docker rm"
+                    } catch (Exception e) {
+                        echo 'rm all running images fail'
+                    }
+                }
+
                 echo 'build new images'
                 script {
                     def pid = sh returnStdout: true, script: "ls -al ./"

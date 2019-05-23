@@ -68,7 +68,7 @@ pipeline {
                 // 替换所有的Image版本
                 echo "replace image version to ${timeString}"
                 contentReplace(
-                    config: [
+                    configs: [
                         // fileContentReplaceItemConfig(
                         //     search: 'latest',
                         //     replace: "${timeString}",

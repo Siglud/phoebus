@@ -71,12 +71,12 @@ pipeline {
                     config: [
                         // fileContentReplaceItemConfig(
                         //     search: 'latest',
-                        //     replace "${timeString}",
+                        //     replace: "${timeString}",
                         //     matchCount: 1
                         // ),
                         fileContentReplaceItemConfig(
                             search: 'active=dev',
-                            replace 'active=dev2',
+                            replace: 'active=dev2',
                             matchCount: 1
                         )
                     ],

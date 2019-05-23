@@ -1,0 +1,41 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: phoebus
+  labels:
+    app: phoebus
+spec:
+  ports:
+  - port: 9001
+    name: http
+    targetPort: 8080
+  selector:
+    app: phoebus
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: phoebus
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: phoebus
+        version: v1
+    spec:
+      containers:
+      - name: phoebus
+        image: star-phoebus:latest
+        args:
+        - java -jar -Xmx200M app.jar --spring.profiles.active=dev
+        imagePullPolicy: IfNotPresent
+        ports:
+          - containerPort: 8080
+        resources:
+          limits:
+            cpu: 500m
+            memory: 200Mi
+          requests:
+            cpu: 10m
+            memory: 100Mi

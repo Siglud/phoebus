@@ -6,6 +6,9 @@ pipeline {
         // skipDefaultCheckout()
         timeout(time: 1, unit: 'HOURS')
     }
+    environment {
+      timeString = sh returnStdout: true, script: "date +%Y%m%d%H%M"
+    }
     stages {
         stage('Build Jar') {
             agent {
@@ -42,7 +45,7 @@ pipeline {
                     def pid = sh returnStdout: true, script: "ls -al ./"
                     echo "========= ${pid} ======="
                 }
-                sh 'docker build . -t phoebus'
+                sh 'docker build . -t phoebus:${timeString}'
                 echo 'remove old images'
                 script {
                     try {
@@ -53,6 +56,38 @@ pipeline {
                 }
                 echo 'running new image'
                 sh 'docker run -d --restart=always phoebus java -jar -Xmx200M app.jar --spring.profiles.active=dev'
+            }
+        }
+        stage('Deploy to Kubernetes') {
+            agent none
+            when {
+                environment ignoreCase: true, name: 'JENKINS_NAME', value: 'cj'
+                beforeAgent true
+            }
+            steps {
+                // 替换所有的Image版本
+                echo "replace image version to ${timeString}"
+                contentReplace(
+                    config: [
+                        // fileContentReplaceItemConfig(
+                        //     search: 'latest',
+                        //     replace "${timeString}",
+                        //     matchCount: 1
+                        // ),
+                        fileContentReplaceItemConfig(
+                            search: 'active=dev',
+                            replace 'active=dev2',
+                            matchCount: 1
+                        )
+                    ],
+                    fileEncoding: 'UTF-8',
+                    filePath: 'kubernetes.yaml'
+                )
+                // 发布到本地Kubernetes
+                // echo 'publish to local test kubernetes'
+                // withKubeConfig([credentialsId: 'k8s-18', serverUrl: 'https://192.168.0.18:6443']) {
+                //       sh 'kubectl apply -f kubernetes.yaml'
+                // }
             }
         }
     }

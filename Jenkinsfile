@@ -69,19 +69,23 @@ pipeline {
                 echo "replace image version to ${timeString}"
                 contentReplace(
                     configs: [
-                        // fileContentReplaceItemConfig(
-                        //     search: 'latest',
-                        //     replace: "${timeString}",
-                        //     matchCount: 1
-                        // ),
-                        fileContentReplaceItemConfig(
-                            search: 'active=dev',
-                            replace: 'active=dev2',
-                            matchCount: 1
+                        fileContentReplaceConfig(
+                            configs: [
+                                // fileContentReplaceItemConfig(
+                                //     search: 'latest',
+                                //     replace: "${timeString}",
+                                //     matchCount: 1
+                                // ),
+                                fileContentReplaceItemConfig(
+                                    search: 'active=dev',
+                                    replace: 'active=dev2',
+                                    matchCount: 1
+                                )
+                            ],
+                            fileEncoding: 'UTF-8',
+                            filePath: 'kubernetes.yaml'
                         )
-                    ],
-                    fileEncoding: 'UTF-8',
-                    filePath: 'kubernetes.yaml'
+                    ]
                 )
                 // 发布到本地Kubernetes
                 // echo 'publish to local test kubernetes'
